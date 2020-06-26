@@ -16,19 +16,22 @@ import os
 
 
 st.title('Rate my run')
-st.header('Upload your planned activity of see the difficulty rating')
+st.header('Upload your planned activity to see the difficulty rating')
+
 
 
 # In[7]:
+from pathlib import Path
 
+data_folder = Path("routes/")
 
-def file_selector(folder_path='.'):
+def file_selector(folder_path=data_folder):
     filenames = os.listdir(folder_path)
     selected_filename = st.selectbox('Select a file', filenames)
     return os.path.join(folder_path, selected_filename)
 
 filename = file_selector()
-st.write('You selected `%s`' % filename)
+#st.write('You selected `%s`' % filename)
 
 
 # In[10]:
@@ -111,24 +114,36 @@ X = pd.DataFrame.from_dict(X_test, orient = 'index')
 import pickle
 pkl_filename = "pickle_model.pkl"
 with open(pkl_filename, 'rb') as file:   
-    MLmodel = pickle.load(file)
+    RFmodel = pickle.load(file)
 
 
 # In[62]:
 
 
 #Ingest user input into trained ML model
-y_predicted = MLmodel.predict(X.T)
+y_predicted = RFmodel.predict(X.T)
 
 
 # In[63]:
 
-st.write('The difficulty of the route is {y}'.format(y = y_predicted))
+st.write('The difficulty of the route is **{y}**'.format(y = y_predicted[0]))
+st.write('**_Route Info:_**')
+#st.write('distance = {y} miles'.format(y = round(total_distance, 2)))
+#st.write('elevation gain = {x} and loss= {y} feet'.format(x = round(gain_ft,2), y = round(loss_ft, 2)))
+#st.write('high point = {x} and low point = {y} feet'.format(x = round(high*3.28084,2), y = round(low*3.28084, 2)))
+
+X_test = {'length' : total_distance, 'ascent' : gain_ft, 'descent' : loss_ft, 
+                        'high' : high*3.28084, 'low' : low*3.28084, 'longitude' : longitude, 'latitude' : latitude}
 
 
-
+X = pd.DataFrame.from_dict(X_test, orient = 'index')
+st.table(X)
 # In[ ]:
 
-st.map(df)
+st.map(df, zoom = 12)
 
+from PIL import Image
+image = Image.open('sunrise-in-the-smoky-mountains.jpg')
 
+st.image(image,
+         use_column_width=True)

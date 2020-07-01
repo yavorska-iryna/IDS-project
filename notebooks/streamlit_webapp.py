@@ -4,13 +4,14 @@ import streamlit as st
 import numpy as np
 import pandas as pd
 import os
-
+import io
 
 st.title('Rate my run')
+st.header('... on the run')
 st.header('Upload your planned activity (.gpx) to see the difficulty rating')
 
-from pathlib import Path
-def file_selector(folder_path = "."):
+#from pathlib import Path
+def file_selector(folder_path = "routes/"):
     filenames = os.listdir(folder_path)
     selected_filename = st.selectbox('Select a file', filenames)
     return os.path.join(folder_path, selected_filename)
@@ -19,17 +20,17 @@ filename = file_selector()
 st.write('You selected `%s`' % filename)
 
 #FILE_TYPES = ["gpx"]
-#filename = st.file_uploader("Upload file", type=FILE_TYPES)
-#show_file = st.empty()
-#if not filename:
-#    show_file.info("Please upload a file of type: " + ", ".join(FILE_TYPES))
-    
-
+#filename = st.file_uploader("Upload file", type = FILE_TYPES)
+#print(filename)
+#if filename is not None:
+#    st.write('You selected `%s`' % filename)
 
 # read the route
 import gpxpy
 
 gpx_file = open(filename, 'r')
+#gpx_file = io.StringIO(filename)
+#gpx_file = filename
 gpx = gpxpy.parse(gpx_file)
 
 try: 

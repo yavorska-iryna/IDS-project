@@ -3,7 +3,7 @@
 #### Web-based application that provides a difficulty score based on route features. 
 
 [About](https://docs.google.com/presentation/d/1c3w7a2jl3yOn5c4sGImYtmCMqDOdIV-y/edit#slide=id.p1)
-[Demo] (https://www.youtube.com/watch?v=VSw8FKZB6sc)
+[Demo](https://www.youtube.com/watch?v=VSw8FKZB6sc)
 
 python libraries:
 - scikit-learn
